@@ -2,7 +2,7 @@
 
 API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para gerenciamento de times, jogadores, estadios e partidas.
 
-## Requisitos do trabalho atendidos
+## Requisitos do trabalho
 
 - Flask + Flasgger
 - 4 Blueprints: `times`, `jogadores`, `estadios` e `partidas`
@@ -225,8 +225,3 @@ docker compose up --build
 - `time_id`, `time_casa_id`, `time_fora_id` e `estadio_id` devem existir
 - `placar` deve seguir o formato `0x0`
 - uma partida nao pode ter o mesmo time nos dois lados
-
-## Entrega
-
-- Tema livre: futebol
-- Repositorio GitHub: adicionar aqui o link do repositorio publico antes da entrega
