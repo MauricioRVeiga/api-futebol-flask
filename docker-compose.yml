@@ -30,6 +30,8 @@ services:
       AUTO_CREATE_TABLES: "true"
       DB_INIT_RETRIES: "10"
       DB_INIT_DELAY: "2"
+      FLASK_APP: run.py
+      FLASK_DEBUG: "false"
       PYTHONUNBUFFERED: "1"
 
 volumes:

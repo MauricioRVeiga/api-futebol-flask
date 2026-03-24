@@ -1,13 +1,17 @@
 import os
 import time
 
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flasgger import Swagger
+from flask_migrate import Migrate
+from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import HTTPException
 
 from .models import db
 
 DEFAULT_DATABASE_URL = 'sqlite:///futebol.db'
+migrate = Migrate()
 
 
 def _as_bool(value, default=False):
@@ -42,7 +46,9 @@ def _init_database(app):
                 time.sleep(delay)
 
 
-def create_app():
+def create_app(test_config=None):
+    load_dotenv()
+
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
         'DATABASE_URL',
@@ -56,21 +62,25 @@ def create_app():
     }
     app.url_map.strict_slashes = False
 
+    if test_config:
+        app.config.update(test_config)
+
     Swagger(
         app,
         template={
             'info': {
                 'title': 'API Futebol Flask',
-                'version': '1.0.0',
+                'version': '1.1.0',
                 'description': (
-                    'API em Flask com Flasgger para gerenciamento de '
-                    'times, jogadores, estadios e partidas.'
+                    'API em Flask com Flasgger para gerenciamento de times, '
+                    'jogadores, estadios e partidas.'
                 ),
             }
         },
     )
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
     from .blueprints.times import times_bp
     from .blueprints.jogadores import jogadores_bp
@@ -95,16 +105,35 @@ def create_app():
             {
                 'message': 'API Futebol Flask no ar.',
                 'docs': '/apidocs/',
+                'health': '/health',
                 'endpoints': ['/times', '/jogadores', '/estadios', '/partidas'],
             }
         )
+
+    @app.get('/health')
+    def health():
+        """
+        Healthcheck da aplicacao
+        ---
+        responses:
+          200:
+            description: API online
+        """
+        return jsonify({'status': 'ok'}), 200
 
     @app.errorhandler(HTTPException)
     def handle_http_exception(exc):
         return jsonify({'error': exc.description}), exc.code
 
+    @app.errorhandler(IntegrityError)
+    def handle_integrity_error(exc):
+        db.session.rollback()
+        app.logger.warning('Erro de integridade: %s', exc)
+        return jsonify({'error': 'Violacao de integridade no banco de dados.'}), 409
+
     @app.errorhandler(Exception)
     def handle_generic_exception(exc):
+        db.session.rollback()
         app.logger.exception('Erro interno nao tratado: %s', exc)
         return jsonify({'error': 'Erro interno do servidor.'}), 500
 
