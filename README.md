@@ -1,6 +1,6 @@
 # API Futebol Flask
 
-API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para gerenciamento de times, jogadores, estadios e partidas.
+API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para gerenciamento de times, jogadores, estádios e partidas.
 
 ## Requisitos do trabalho
 
@@ -20,7 +20,7 @@ API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para
 - Respostas JSON padronizadas
 - Validações de campos obrigatórios e formatos
 - Validação de relacionamento entre entidades
-- Partidas relacionadas a `times` e `estadios` por ID
+- Partidas relacionadas a `times` e `estádios` por ID
 - `.env.example` para facilitar configuração local
 - Dependências fixadas no `requirements.txt`
 
@@ -42,7 +42,7 @@ API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para
 - `PUT /jogadores/<id>`
 - `DELETE /jogadores/<id>`
 
-### Estadios
+### Estádios
 
 - `GET /estadios`
 - `GET /estadios/<id>`
@@ -79,11 +79,11 @@ API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para
 }
 ```
 
-### Criar estadio
+### Criar estádio
 
 ```json
 {
-  "nome": "Maracana",
+  "nome": "Maracanã",
   "cidade": "Rio de Janeiro",
   "capacidade": 78838
 }
@@ -102,7 +102,7 @@ API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para
 
 ## Como rodar com Docker Compose
 
-1. Clone o repositorio:
+1. Clone o repositório:
 
 ```bash
 git clone <url-do-repositorio>
@@ -115,10 +115,10 @@ cd api-futebol-flask
 docker compose up --build
 ```
 
-3. A API ficara disponivel em `http://localhost:5000`.
-4. A documentação Swagger ficara em `http://localhost:5000/apidocs/`.
-5. O healthcheck ficara em `http://localhost:5000/health`.
-6. O PostgreSQL sera iniciado com os dados do seed automaticamente na primeira subida do volume.
+3. A API ficará disponível em `http://localhost:5000`.
+4. A documentação Swagger ficará em `http://localhost:5000/apidocs/`.
+5. O healthcheck ficará em `http://localhost:5000/health`.
+6. O PostgreSQL será iniciado com os dados do seed automaticamente na primeira subida do volume.
 
 Se quiser subir em segundo plano:
 
@@ -128,7 +128,7 @@ docker compose up -d --build
 
 ## Como rodar localmente
 
-1. Clone o repositorio:
+1. Clone o repositório:
 
 ```bash
 git clone https://github.com/MauricioRVeiga/api-futebol-flask.git
@@ -193,7 +193,7 @@ python -m flask --app run.py db upgrade
 python run.py
 ```
 
-Observacao:
+Observação:
 Sem `DATABASE_URL`, a aplicação usa SQLite local em `futebol.db`, o que facilita testes rápidos.
 
 ## Testes
@@ -206,7 +206,7 @@ python -m pytest
 
 ## Migrations
 
-O projeto esta preparado para usar `Flask-Migrate`. Caso voce altere os modelos no futuro, use:
+O projeto está preparado para usar `Flask-Migrate`. Caso você altere os modelos no futuro, use:
 
 ```bash
 python -m flask --app run.py db migrate -m "descricao da alteracao"
@@ -215,7 +215,7 @@ python -m flask --app run.py db upgrade
 
 ## Seed
 
-O seed SQL esta em [seed.sql](/c:/api-futebol-flask/app/db/seed.sql) e cria as tabelas com dados iniciais de exemplo.
+O seed SQL está em [seed.sql](/c:/api-futebol-flask/app/db/seed.sql) e cria as tabelas com dados iniciais de exemplo.
 
 Se quiser recriar o banco do zero no Docker e reaplicar o seed:
 
@@ -224,10 +224,10 @@ docker compose down -v
 docker compose up --build
 ```
 
-## Validacoes importantes
+## Validações importantes
 
 - `estado` deve ter exatamente 2 caracteres
 - `capacidade` deve ser maior que zero
 - `time_id`, `time_casa_id`, `time_fora_id` e `estadio_id` devem existir
 - `placar` deve seguir o formato `0x0`
-- uma partida nao pode ter o mesmo time nos dois lados
+- uma partida não pode ter o mesmo time nos dois lados
