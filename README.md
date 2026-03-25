@@ -9,7 +9,7 @@ API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para
 - Cada blueprint possui `GET`, `POST`, `PUT` e `DELETE`
 - Seed em SQL no arquivo [seed.sql](/c:/api-futebol-flask/app/db/seed.sql)
 - Docker Compose para o banco de dados PostgreSQL
-- Documentacao Swagger em `/apidocs/`
+- Documentação Swagger em `/apidocs/`
 - Endpoints extras `GET /<recurso>/<id>` para consulta individual
 - Healthcheck em `/health`
 - Testes automatizados com `pytest`
@@ -18,11 +18,11 @@ API REST desenvolvida com Flask, Flask-SQLAlchemy, Flask-Migrate e Flasgger para
 ## Funcionalidades extras implementadas
 
 - Respostas JSON padronizadas
-- Validacoes de campos obrigatorios e formatos
-- Validacao de relacionamento entre entidades
+- Validações de campos obrigatórios e formatos
+- Validação de relacionamento entre entidades
 - Partidas relacionadas a `times` e `estadios` por ID
-- `.env.example` para facilitar configuracao local
-- Dependencias fixadas no `requirements.txt`
+- `.env.example` para facilitar configuração local
+- Dependências fixadas no `requirements.txt`
 
 ## Estrutura das rotas
 
@@ -116,16 +116,22 @@ docker compose up --build
 ```
 
 3. A API ficara disponivel em `http://localhost:5000`.
-4. A documentacao Swagger ficara em `http://localhost:5000/apidocs/`.
+4. A documentação Swagger ficara em `http://localhost:5000/apidocs/`.
 5. O healthcheck ficara em `http://localhost:5000/health`.
 6. O PostgreSQL sera iniciado com os dados do seed automaticamente na primeira subida do volume.
+
+Se quiser subir em segundo plano:
+
+```bash
+docker compose up -d --build
+```
 
 ## Como rodar localmente
 
 1. Clone o repositorio:
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/MauricioRVeiga/api-futebol-flask.git
 cd api-futebol-flask
 ```
 
@@ -143,7 +149,7 @@ Linux ou macOS:
 cp .env.example .env
 ```
 
-3. Instale as dependencias:
+3. Instale as dependências:
 
 ```bash
 pip install -r requirements.txt
@@ -152,10 +158,10 @@ pip install -r requirements.txt
 4. Se quiser usar PostgreSQL, suba apenas o banco com Docker:
 
 ```bash
-docker compose up db
+docker compose up -d db
 ```
 
-5. Defina a variavel `DATABASE_URL` caso queira usar o PostgreSQL.
+5. Defina a variável `DATABASE_URL` caso queira usar o PostgreSQL.
 
 PowerShell:
 
@@ -181,14 +187,14 @@ export DATABASE_URL=postgresql://user:password@localhost:5432/futebol_db
 python -m flask --app run.py db upgrade
 ```
 
-7. Execute a aplicacao:
+7. Execute a aplicação:
 
 ```bash
 python run.py
 ```
 
 Observacao:
-Sem `DATABASE_URL`, a aplicacao usa SQLite local em `futebol.db`, o que facilita testes rapidos.
+Sem `DATABASE_URL`, a aplicação usa SQLite local em `futebol.db`, o que facilita testes rápidos.
 
 ## Testes
 

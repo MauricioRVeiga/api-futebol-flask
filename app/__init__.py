@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 
 from dotenv import load_dotenv
@@ -44,6 +45,14 @@ def _init_database(app):
                     )
                     return
                 time.sleep(delay)
+
+
+def _should_auto_create_tables(app):
+    if not _as_bool(os.getenv('AUTO_CREATE_TABLES'), default=True):
+        return False
+
+    # Evita conflito entre create_all() e comandos do Flask-Migrate.
+    return 'db' not in sys.argv
 
 
 def create_app(test_config=None):
@@ -137,7 +146,7 @@ def create_app(test_config=None):
         app.logger.exception('Erro interno nao tratado: %s', exc)
         return jsonify({'error': 'Erro interno do servidor.'}), 500
 
-    if _as_bool(os.getenv('AUTO_CREATE_TABLES'), default=True):
+    if _should_auto_create_tables(app):
         _init_database(app)
 
     return app
