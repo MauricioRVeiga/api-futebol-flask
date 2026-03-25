@@ -9,6 +9,11 @@ def test_home_and_health(client):
 
 
 def test_times_crud(client):
+    response = client.get('/times')
+    assert response.status_code == 200
+    assert response.get_json()['data'] == []
+    assert response.get_json()['total'] == 0
+
     response = client.post('/times', json={'nome': 'Bahia', 'estado': 'ba'})
     assert response.status_code == 201
     payload = response.get_json()['data']
@@ -30,8 +35,16 @@ def test_times_crud(client):
     response = client.delete(f'/times/{time_id}')
     assert response.status_code == 200
 
+    response = client.get(f'/times/{time_id}')
+    assert response.status_code == 404
+
 
 def test_jogadores_crud(client, base_data):
+    response = client.get('/jogadores')
+    assert response.status_code == 200
+    assert response.get_json()['data'] == []
+    assert response.get_json()['total'] == 0
+
     response = client.post(
         '/jogadores',
         json={
@@ -42,6 +55,10 @@ def test_jogadores_crud(client, base_data):
     )
     assert response.status_code == 201
     jogador_id = response.get_json()['data']['id']
+
+    response = client.get('/jogadores')
+    assert response.status_code == 200
+    assert response.get_json()['total'] == 1
 
     response = client.get(f'/jogadores/{jogador_id}')
     assert response.status_code == 200
@@ -59,8 +76,16 @@ def test_jogadores_crud(client, base_data):
     response = client.delete(f'/jogadores/{jogador_id}')
     assert response.status_code == 200
 
+    response = client.get(f'/jogadores/{jogador_id}')
+    assert response.status_code == 404
+
 
 def test_estadios_crud(client):
+    response = client.get('/estadios')
+    assert response.status_code == 200
+    assert response.get_json()['data'] == []
+    assert response.get_json()['total'] == 0
+
     response = client.post(
         '/estadios',
         json={
@@ -71,6 +96,10 @@ def test_estadios_crud(client):
     )
     assert response.status_code == 201
     estadio_id = response.get_json()['data']['id']
+
+    response = client.get('/estadios')
+    assert response.status_code == 200
+    assert response.get_json()['total'] == 1
 
     response = client.get(f'/estadios/{estadio_id}')
     assert response.status_code == 200
@@ -83,8 +112,16 @@ def test_estadios_crud(client):
     response = client.delete(f'/estadios/{estadio_id}')
     assert response.status_code == 200
 
+    response = client.get(f'/estadios/{estadio_id}')
+    assert response.status_code == 404
+
 
 def test_partidas_crud(client, base_data):
+    response = client.get('/partidas')
+    assert response.status_code == 200
+    assert response.get_json()['data'] == []
+    assert response.get_json()['total'] == 0
+
     response = client.post(
         '/partidas',
         json={
@@ -97,6 +134,10 @@ def test_partidas_crud(client, base_data):
     assert response.status_code == 201
     partida_id = response.get_json()['data']['id']
 
+    response = client.get('/partidas')
+    assert response.status_code == 200
+    assert response.get_json()['total'] == 1
+
     response = client.get(f'/partidas/{partida_id}')
     assert response.status_code == 200
     assert response.get_json()['data']['time_casa_nome'] == 'Flamengo'
@@ -107,6 +148,9 @@ def test_partidas_crud(client, base_data):
 
     response = client.delete(f'/partidas/{partida_id}')
     assert response.status_code == 200
+
+    response = client.get(f'/partidas/{partida_id}')
+    assert response.status_code == 404
 
 
 def test_validation_errors(client, base_data):
